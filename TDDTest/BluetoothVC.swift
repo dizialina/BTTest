@@ -29,8 +29,21 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setNavigationBar()
 
         self.manager = CBCentralManager(delegate: self, queue: DispatchQueue(label: "bluetooth"))
+    }
+    
+    func setNavigationBar() {
+        let disconnectButton = UIBarButtonItem(title: "Disconnect", style: .plain, target: self, action: #selector(disconnect(_:)))
+        disconnectButton.isEnabled = false
+        navigationItem.rightBarButtonItem = disconnectButton
+    }
+    
+    @objc func disconnect(_ sender: UIBarButtonItem) {
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        cancelConnection()
     }
     
     func setPeripheral(_ peripheral: CBPeripheral) {
@@ -45,6 +58,8 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         tableView.reloadData()
         
         manager.connect(peripheral, options: nil)
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        
         debugPrint("Connecting ...")
     }
     
@@ -68,6 +83,9 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         tableView.reloadData()
         
         currentState = .searching
+        
+        // Start scanning again
+        manager.scanForPeripherals(withServices: nil, options: nil)
     }
     
     // MARK: - Bluetooth delegates
@@ -97,14 +115,27 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
             currentState = .devicesMode
         }
         
-        if let deviceName = (advertisementData as NSDictionary).object(forKey: CBAdvertisementDataLocalNameKey) as? String {
-            if currentState == .devicesMode, tableSource[deviceName] == nil {
-                tableSource[deviceName] = peripheral as Any
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+        guard currentState == .devicesMode else { return }
+        
+        if let deviceName = (advertisementData as NSDictionary).object(forKey: CBAdvertisementDataLocalNameKey) as? String, tableSource[deviceName] == nil {
+            print("Data device name: \(deviceName)")
+            tableSource[deviceName] = peripheral as Any
+            reloadTableOnMainThread()
+            
+        } else {
+            let deviceUUID: String = peripheral.name ?? peripheral.identifier.description
+            if tableSource[deviceUUID] == nil {
+                print("Device UUID: \(deviceUUID)")
+                tableSource[deviceUUID] = peripheral as Any
+                reloadTableOnMainThread()
             }
+        }
+        
+    }
+    
+    func reloadTableOnMainThread() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
@@ -114,12 +145,16 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
         debugPrint("Getting services ...")
     }
     
+    func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        debugPrint("Connection failed")
+    }
+    
     // Discovered peripheral services
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         
         for service in peripheral.services! {
-            tableSource[service.uuid.uuidString] = service as Any
-            debugPrint("Service: ", service.uuid)
+            tableSource[service.uuid.description] = service as Any
+            debugPrint("Service: ", service.uuid.description)
         }
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -146,10 +181,21 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // let data = Data(bytes: [value])
     // peripheral.writeValue(Data(), for: characteristic, type: .withoutResponse)
     
+    // Send "01:00" (0x0100)
+    //var parameter = NSInteger(1)
+    //let data = NSData(bytes: &parameter, length: 1)
+    //peripheral.writeValue(data, forCharacteristic: characteric, type: CBCharacteristicWriteType.WithResponse)
+    
+    // Send "0802"
+    //var parameter = 0x0802
+    //let data = NSData(bytes: &parameter, length: 2)
+    
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
         if error != nil {
             print("Error writing value: " + error!.localizedDescription)
+        } else {
+            peripheral.readValue(for: descriptor.characteristic)
         }
     }
     
@@ -165,9 +211,14 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Get bytes into string
             print("String: \(String(bytes: value, encoding: String.Encoding.utf8) ?? "Can't convert into string")")
             
+            print("Hexa string: \( value.map{ String(format: "%02x", $0) }.joined(separator: ""))")
+            
             var bytesArray = [UInt8](repeating: 0, count: value.count)
             value.copyBytes(to: &bytesArray, count: value.count)
             print("Bytes array: \(bytesArray)")
+            
+            let characters = bytesArray.map { Character(UnicodeScalar($0)) }
+            print("UInt8 string: \(String(Array(characters)))")
 
 //            let bigEndianValue = bytesArray.withUnsafeBufferPointer {
 //                ($0.baseAddress!.withMemoryRebound(to: UInt32.self, capacity: 1) { $0 })
@@ -186,6 +237,7 @@ class BluetoothVC: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Potentially hide relevant interface
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         debugPrint("Disconnected.")
+        navigationItem.rightBarButtonItem?.isEnabled = false
         
         tableSource.removeAll()
         DispatchQueue.main.async {
