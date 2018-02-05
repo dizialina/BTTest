@@ -35,3 +35,13 @@ extension Int32: DataConvertible {}
 extension Int64: DataConvertible {}
 extension Double: DataConvertible {}
 extension Float: DataConvertible {}
+
+extension UInt32 {
+    static func from(bytes: [UInt8]) -> UInt32? {
+        guard bytes.count <= 4 else { return nil }
+        return bytes
+            .enumerated()
+            .map { UInt32($0.element) << UInt32($0.offset * 8) }
+            .reduce(0, +)
+    }
+}
