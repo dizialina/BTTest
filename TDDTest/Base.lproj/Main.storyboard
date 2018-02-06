@@ -16,6 +16,9 @@
             <string>Avenir-Heavy</string>
             <string>Avenir-Light</string>
         </array>
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-Medium</string>
+        </array>
     </customFonts>
     <scenes>
         <!--BluetoothVC-->
@@ -66,11 +69,66 @@
                     <navigationItem key="navigationItem" id="nuJ-Co-1hq"/>
                     <connections>
                         <outlet property="tableView" destination="zQm-XU-5Iq" id="8qT-mW-Rja"/>
+                        <segue destination="Z6H-y9-hp7" kind="show" identifier="showHeartRate" id="aSP-2m-dN2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fGp-zj-auB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="372" y="-654.42278860569718"/>
+        </scene>
+        <!--Heart RateVC-->
+        <scene sceneID="vn5-Ib-hDr">
+            <objects>
+                <viewController storyboardIdentifier="HeartRateVC" id="Z6H-y9-hp7" customClass="HeartRateVC" customModule="TDDTest" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hMO-Lg-AWe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BbM-qD-Hta">
+                                <rect key="frame" x="150.5" y="291" width="74" height="85"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="62"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TLK-Ob-YJE">
+                                <rect key="frame" x="138" y="402" width="100" height="41"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="41" id="DIQ-UZ-n2k"/>
+                                    <constraint firstAttribute="width" constant="100" id="IoJ-hR-MIn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
+                                <state key="normal" title="Measure"/>
+                                <connections>
+                                    <action selector="measureHeartRate:" destination="Z6H-y9-hp7" eventType="touchUpInside" id="q81-Q6-fJA"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading time..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSL-HA-s5Z">
+                                <rect key="frame" x="131.5" y="607" width="113" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TLK-Ob-YJE" firstAttribute="top" secondItem="BbM-qD-Hta" secondAttribute="bottom" constant="26" id="FVq-6u-Kel"/>
+                            <constraint firstItem="TLK-Ob-YJE" firstAttribute="centerX" secondItem="hMO-Lg-AWe" secondAttribute="centerX" id="GzF-J1-LRW"/>
+                            <constraint firstItem="QSL-HA-s5Z" firstAttribute="centerX" secondItem="hMO-Lg-AWe" secondAttribute="centerX" id="Joq-6A-U0z"/>
+                            <constraint firstItem="BbM-qD-Hta" firstAttribute="centerY" secondItem="hMO-Lg-AWe" secondAttribute="centerY" id="aNy-f3-c9X"/>
+                            <constraint firstItem="BbM-qD-Hta" firstAttribute="centerX" secondItem="hMO-Lg-AWe" secondAttribute="centerX" id="djT-v2-Gse"/>
+                            <constraint firstItem="ANg-cP-mGR" firstAttribute="bottom" secondItem="QSL-HA-s5Z" secondAttribute="bottom" constant="39" id="p5O-F8-Gay"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ANg-cP-mGR"/>
+                    </view>
+                    <connections>
+                        <outlet property="heartRateLabel" destination="BbM-qD-Hta" id="uTg-SU-X8e"/>
+                        <outlet property="measureButton" destination="TLK-Ob-YJE" id="RUE-kl-gPW"/>
+                        <outlet property="timeLabel" destination="QSL-HA-s5Z" id="EYM-3j-POm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mut-Iu-YHx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1101.5999999999999" y="-654.42278860569718"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">

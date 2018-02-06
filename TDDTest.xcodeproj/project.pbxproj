@@ -22,6 +22,7 @@
 		D72217A92023043400F9CBA1 /* DataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72217A82023043400F9CBA1 /* DataConvertible.swift */; };
 		D72217AC202305F000F9CBA1 /* CBCharacteristic+Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72217AB202305F000F9CBA1 /* CBCharacteristic+Properties.swift */; };
 		D72217AE20234F8000F9CBA1 /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72217AD20234F8000F9CBA1 /* Data+Hex.swift */; };
+		D72217F6202998C200F9CBA1 /* HeartRateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72217F5202998C200F9CBA1 /* HeartRateVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		D72217AB202305F000F9CBA1 /* CBCharacteristic+Properties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBCharacteristic+Properties.swift"; sourceTree = "<group>"; };
 		D72217AD20234F8000F9CBA1 /* Data+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Hex.swift"; sourceTree = "<group>"; };
 		D72217B520246EC300F9CBA1 /* TDDTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TDDTest.entitlements; sourceTree = "<group>"; };
+		D72217F5202998C200F9CBA1 /* HeartRateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				D72217B520246EC300F9CBA1 /* TDDTest.entitlements */,
 				D722176C20207E9200F9CBA1 /* AppDelegate.swift */,
 				D72217A62021DFC600F9CBA1 /* BluetoothVC.swift */,
+				D72217F5202998C200F9CBA1 /* HeartRateVC.swift */,
 				D722176E20207E9200F9CBA1 /* ViewController.swift */,
 				D722179C20207FCF00F9CBA1 /* Brain.swift */,
 				D72217A22020C2A100F9CBA1 /* Game.swift */,
@@ -318,6 +321,7 @@
 				D722176D20207E9200F9CBA1 /* AppDelegate.swift in Sources */,
 				D72217AE20234F8000F9CBA1 /* Data+Hex.swift in Sources */,
 				D72217A32020C2A100F9CBA1 /* Game.swift in Sources */,
+				D72217F6202998C200F9CBA1 /* HeartRateVC.swift in Sources */,
 				D72217A72021DFC600F9CBA1 /* BluetoothVC.swift in Sources */,
 				D72217AC202305F000F9CBA1 /* CBCharacteristic+Properties.swift in Sources */,
 				D72217A92023043400F9CBA1 /* DataConvertible.swift in Sources */,
